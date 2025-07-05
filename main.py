@@ -38,19 +38,21 @@ def create_user_sync(user: schemas.UserCreate, db: Annotated[Session, Depends(ge
 
 
 @app.get("/users/sync", response_model=list[schemas.UserOut])
-def get_users_sync(db: Annotated[Session, Depends(get_sync_db)]):
+def get_users_sync(db: Annotated[Session, Depends(get_sync_db)]) -> list[schemas.UserOut]:
     return crud.get_users_sync(db)
 
 
 @app.post("/users/async", response_model=schemas.UserOut)
 async def create_user_async(
     user: schemas.UserCreate, db: Annotated[AsyncSession, Depends(get_async_db)]
-):
+) -> list[schemas.UserOut]:
     return await crud.create_user_async(db, user)
 
 
 @app.get("/users/async", response_model=list[schemas.UserOut])
-async def get_users_async(db: Annotated[AsyncSession, Depends(get_async_db)]):
+async def get_users_async(
+    db: Annotated[AsyncSession, Depends(get_async_db)],
+) -> list[schemas.UserOut]:
     return await crud.get_users_async(db)
 
 
